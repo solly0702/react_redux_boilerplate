@@ -3,7 +3,7 @@ var webpack = require("webpack");
 var path = require("path");
 
 module.exports = {
-  devtool: debug ? "inline-source-map" : null,    // give line-number for debugging
+  devtool: debug ? null : "inline-source-map",    // give line-number for debugging
   entry: [
     "./src/client.js"   // app's entry point
   ],
@@ -16,6 +16,11 @@ module.exports = {
     modulesDirectories: ["node_modules", "src", "bower_components"],
     extensions: ['', '.js', '.jsx']
   },
+  // devServer: {
+  //   inline: true,
+  //   contentBase: "/",
+  //   port: 8080
+  // },
   module: {
     loaders: [
       {
@@ -28,15 +33,12 @@ module.exports = {
         }
       },
       {
-        test: /\.css$/,
-        loader: "style-loader!css-loader"
+        test: /\.scss$/,
+        loader: "style-loader!css-loader!sass-loader"
       },
       {
-        test: /\.png$/,
+        test: /\.(png|jpg)$/,
         loader: "url-loader?limit=100000"
-      },
-      { test: /\.jpg$/,
-        loader: "file-loader"
       },
       {
         test: /\.(woff|woff2)(\?v=\d+\.\d+\.\d+)?$/,
@@ -56,10 +58,14 @@ module.exports = {
       }
     ]
   },
+  devServer: {
+  historyApiFallback: true,
+  contentBase: "./"
+  },
   plugins: debug ? [] : [
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.OccurrenceOrderPlugin(),
-    // new webpack.optimize.UglifyJsPlugin({ mangle: false, sourcemap: false}),
+    new webpack.optimize.UglifyJsPlugin({ mangle: false, sourcemap: false}),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),
     new webpack.ResolverPlugin(
