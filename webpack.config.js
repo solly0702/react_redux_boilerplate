@@ -3,7 +3,7 @@ var webpack = require("webpack");
 var path = require("path");
 
 module.exports = {
-  devtool: debug ? null : "inline-source-map",    // give line-number for debugging
+  devtool: debug ? null : "source-map",    // give line-number for debugging
   entry: [
     "./src/client.js"   // app's entry point
   ],
@@ -16,11 +16,10 @@ module.exports = {
     modulesDirectories: ["node_modules", "src", "bower_components"],
     extensions: ['', '.js', '.jsx']
   },
-  // devServer: {
-  //   inline: true,
-  //   contentBase: "/",
-  //   port: 8080
-  // },
+  devServer: {
+  historyApiFallback: true,
+  contentBase: "./"
+  },
   module: {
     loaders: [
       {
@@ -57,10 +56,6 @@ module.exports = {
         loader: 'url?limit=10000&mimetype=image/svg+xml'
       }
     ]
-  },
-  devServer: {
-  historyApiFallback: true,
-  contentBase: "./"
   },
   plugins: debug ? [] : [
     new webpack.optimize.DedupePlugin(),
