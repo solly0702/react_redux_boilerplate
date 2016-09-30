@@ -3,14 +3,16 @@ var webpack = require("webpack");
 var path = require("path");
 
 module.exports = {
-  devtool: debug ? null : "source-map",    // give line-number for debugging
-  entry: [
-    "./src/client.js"   // app's entry point
-  ],
+  cache: true,
+  devtool: "eval",
+  entry: {
+    client: "./src/client.js",
+    vendors: ["react"]
+  },
   output: {
-    path: path.resolve(__dirname),
+    path: path.resolve(__dirname, 'build'),
     publicPath: "/",
-    filename: "bundle.js"
+    filename: "[name].bundle.js"
   },
   resolve: {
     modulesDirectories: ["node_modules", "src", "bower_components"],
@@ -18,7 +20,10 @@ module.exports = {
   },
   devServer: {
   historyApiFallback: true,
-  contentBase: "./"
+  contentBase: "./",
+  hot: true,
+  inline: true,
+  port: 8080
   },
   module: {
     loaders: [
@@ -28,7 +33,7 @@ module.exports = {
         loader: "babel",
         query: {
           presets: ["react", "es2015", "stage-0"],
-          plugins: ["add-module-exports", "react-html-attrs", "transform-class-properties", "transform-decorators-legacy", "transform-react-constant-elements"]
+          plugins: ["add-module-exports", "react-html-attrs", "transform-class-properties", "transform-decorators-legacy", "transform-react-constant-elements", "transform-react-inline-elements"]
         }
       },
       {
@@ -58,9 +63,15 @@ module.exports = {
     ]
   },
   plugins: debug ? [] : [
-    new webpack.optimize.DedupePlugin(),
+    // new BundleTracker({filename: './webpack-stats.json'}),        // python django only!
+    new webpack.optimize.CommonsChunkPlugin('commons', 'commons.bundle.js'),
+    new webpack.optimize.DedupePlugin({
+      'process.env.NODE_ENV': JSON.stringify('production')
+    }),
+    new webpack.optimize.UglifyJsPlugin({
+      compress: {warnings: false}
+    }),
     new webpack.optimize.OccurrenceOrderPlugin(),
-    new webpack.optimize.UglifyJsPlugin({ mangle: false, sourcemap: false}),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),
     new webpack.ResolverPlugin(
