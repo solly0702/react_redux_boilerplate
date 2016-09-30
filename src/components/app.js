@@ -1,9 +1,9 @@
-import React, { Component } from "react"
-import Example from "../containers/example"
+import React, { Component } from "react";
+import Example from "../containers/example";
 
-import "react-bootstrap"
+import * as ReactBootstrap from 'react-bootstrap';
 import injectTapEventPlugin from "react-tap-event-plugin";
-import "../../style/style.scss"
+import "../../style/style.scss";
 
 class App extends Component {
   render() {

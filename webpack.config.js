@@ -11,7 +11,7 @@ module.exports = {
   },
   output: {
     path: path.resolve(__dirname, 'build'),
-    publicPath: "/",
+    publicPath: "/client/build/",
     filename: "[name].bundle.js"
   },
   resolve: {
@@ -69,7 +69,9 @@ module.exports = {
       'process.env.NODE_ENV': JSON.stringify('production')
     }),
     new webpack.optimize.UglifyJsPlugin({
-      compress: {warnings: false}
+      compress: {warnings: false},
+      mangle: false,
+      sourceMap: false
     }),
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.HotModuleReplacementPlugin(),
