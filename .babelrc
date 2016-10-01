@@ -1,4 +1,17 @@
 {
-  "presets": ["react", "es2015", "stage-0"],
-  "plugins": ["add-module-exports", "react-html-attrs", "transform-class-properties", "transform-decorators-legacy", "transform-react-constant-elements", "transform-react-inline-elements"]
+  "presets": [
+    "es2015",
+    "react",
+    "stage-0"
+  ],
+  "env": {
+    "development": {
+      "plugins": [
+        "react-html-attrs",
+        "transform-class-properties",
+        "transform-decorators-legacy",
+        "transform-react-constant-elements"
+      ],
+    }
+  }
 }

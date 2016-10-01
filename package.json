@@ -8,20 +8,17 @@
     "test": "mocha --compilers js:babel-core/register --require ./test/test_helper.js --recursive ./test",
     "test:watch": "npm run test -- --watch",
     "build": "webpack --progress --profile --colors",
-    "start": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server --progress --colors"
+    "start": "webpack-dev-server"
   },
   "author": "Sol Lee <solly0702@gmail.com>",
   "license": "ISC",
   "devDependencies": {
     "babel-core": "^6.9.0",
     "babel-loader": "^6.2.4",
-    "babel-plugin-add-module-exports": "^0.2.1",
     "babel-plugin-react-html-attrs": "^2.0.0",
-    "babel-plugin-react-transform": "^2.0.2",
     "babel-plugin-transform-class-properties": "^6.9.0",
     "babel-plugin-transform-decorators-legacy": "^1.3.4",
     "babel-plugin-transform-react-constant-elements": "^6.8.0",
-    "babel-plugin-transform-react-inline-elements": "^6.8.0",
     "babel-preset-es2015": "^6.9.0",
     "babel-preset-react": "^6.5.0",
     "babel-preset-stage-0": "^6.5.0",
@@ -45,7 +42,6 @@
   "dependencies": {
     "axios": "^0.14.0",
     "lodash": "^4.12.0",
-    "material-ui": "^0.15.4",
     "react": "^15.1.0",
     "react-bootstrap": "^0.30.3",
     "react-dom": "^15.0.2",
@@ -54,7 +50,6 @@
     "react-tap-event-plugin": "^1.0.0",
     "redux": "^3.5.2",
     "redux-form": "^6.0.5",
-    "redux-logger": "^2.6.1",
     "redux-promise": "^0.5.3",
     "redux-thunk": "^2.1.0"
   }
