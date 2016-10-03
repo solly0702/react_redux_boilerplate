@@ -12,13 +12,13 @@ module.exports = {
     },
     devtool: 'eval',
     entry: {
-        index: './dev/index.js',
+        bundle: './dev/index.js',
         vendor: ['react']
     },
     output: {
         path: path.resolve(__dirname, 'src/js'),
-        publicPath: "/js/",
-        filename: 'bundle.min.js'
+        publicPath: 'http://localhost:8080/client/src/js/',
+        filename: '[name].min.js'
     },
     resolve: {
       modulesDirectories: ["node_modules", "bower_components"],

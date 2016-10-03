@@ -1,5 +1,16 @@
-$base-color: rgb(221, 26, 26);
+$header-background: rgb(11, 175, 193);
+$body-background: rgb(8, 224, 91);
+$footer-background: rgb(234, 169, 39);
+
 
 .header {
-  background-color: $base-color;
+  background-color: $header-background;
+}
+
+.body {
+  background-color: $body-background;
+}
+
+.footer {
+  background-color: $footer-background;
 }
