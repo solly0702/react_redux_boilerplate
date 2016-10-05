@@ -2,12 +2,12 @@ var debug = process.env.NODE_ENV === "production";
 var path = require('path');
 var webpack = require('webpack');
 // var BundleTracker = require('webpack-bundle-tracker'); // only for django
+
 module.exports = {
     devServer: {
         historyApiFallback: true,
-        contentBase: "./src",
+        contentBase: "./build",
         inline: true,
-        hot: true,
         port: 8080
     },
     devtool: 'eval',
@@ -16,8 +16,8 @@ module.exports = {
         vendor: ['react']
     },
     output: {
-        path: path.resolve(__dirname, 'src/js'),
-        publicPath: 'http://localhost:8080/client/src/js/',
+        path: path.resolve(__dirname, 'build/js'),
+        publicPath: '/js',
         filename: '[name].min.js'
     },
     resolve: {
@@ -33,7 +33,9 @@ module.exports = {
             },
             {
                 test: /\.scss/,
-                loader: 'style-loader!css-loader!sass-loader'
+                loader: 'style-loader!css-loader!sass-loader?includePaths[]=' +
+                path.resolve(__dirname, "./node_modules/compass-mixins/lib") +
+                "&includePaths[]=" + path.resolve(__dirname, "./mixins/app_mixins")
             },
             {
               test: /\.(png|jpg)$/,
@@ -46,6 +48,7 @@ module.exports = {
         ]
     },
     plugins: debug ? [] : [
+        // new BundleTracker({filename: '../webpack-stats.json'}),        // python django only!
         new webpack.optimize.OccurrenceOrderPlugin(),
         new webpack.HotModuleReplacementPlugin(),
         new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.js', Infinity),
@@ -56,7 +59,6 @@ module.exports = {
         compress: {warnings: false},
         mangle: false,
         sourceMap: false
-        }),
-        // new BundleTracker({filename: '../webpack-stats.json'}),        // python django only!
+        })
     ]
 };

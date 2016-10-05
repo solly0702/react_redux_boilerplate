@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import Header from "./header"
 import Footer from "./footer"
 
-import "../../style/style.scss";
+import "../../build/style/style.scss";
 
 class App extends Component {
   render() {
