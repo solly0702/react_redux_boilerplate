@@ -1,5 +1,6 @@
 .DS_Store
-.log
-.tmp
-.sass-cache
-./client/node_modules
+*.log
+*.tmp
+*.swp
+*.sass-cache
+node_modules/

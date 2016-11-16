@@ -1,22 +1,25 @@
-var debug = process.env.NODE_ENV === "production";
 var path = require('path');
 var webpack = require('webpack');
-// var BundleTracker = require('webpack-bundle-tracker'); // only for django
+
+var ENV = process.env.NODE_ENV
+var isProd = ENV === "build";
+var isTest = ENV === "test";
 
 module.exports = {
+    devtool: isProd ? 'source-map' : 'eval-source-map',
     devServer: {
-        historyApiFallback: true,
-        contentBase: "./build",
-        inline: true,
-        port: 8080
+      contentBase: "./dist",
+      historyApiFallback: true,
+      quite: true,
+      stats: 'minimal',
+      port: 8080
     },
-    devtool: 'eval',
-    entry: {
-        bundle: './dev/index.js',
+    entry: isProd ? {} : {
+        bundle: './src/index.js',
         vendor: ['react']
     },
     output: {
-        path: path.resolve(__dirname, 'build/js'),
+        path: path.resolve(__dirname, "./dist/js"),
         publicPath: '/js',
         filename: '[name].min.js'
     },
@@ -28,37 +31,40 @@ module.exports = {
         loaders: [
             {
                 test: /\.js$/,
-                loaders: ['babel'],
                 exclude: /(node_modules|bower_components)/,
+                loaders: ['babel'],
             },
             {
-                test: /\.scss/,
+                test: /\.(scss|css)/,
                 loader: 'style-loader!css-loader!sass-loader?includePaths[]=' +
                 path.resolve(__dirname, "./node_modules/compass-mixins/lib") +
                 "&includePaths[]=" + path.resolve(__dirname, "./mixins/app_mixins")
             },
             {
-              test: /\.(png|jpg)$/,
-              loader: "url-loader?limit=100000"
+                test: /\.(png|jpe?g|gif|svg|woff|woff2|ttf|eot|ico)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+                loader: 'file-loader?name=fonts/[name].[hash].[ext]?'
             },
             {
-              test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-              loader: 'url?limit=10000&mimetype=image/svg+xml'
+                test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+                loader: 'url?limit=10000&mimetype=image/svg+xml'
             }
         ]
     },
-    plugins: debug ? [] : [
-        // new BundleTracker({filename: '../webpack-stats.json'}),        // python django only!
+    plugins: isProd ? [] : [
+        new webpack.NoErrorsPlugin(),
         new webpack.optimize.OccurrenceOrderPlugin(),
         new webpack.HotModuleReplacementPlugin(),
-        new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.js', Infinity),
-        new webpack.optimize.DedupePlugin({
-        'process.env.NODE_ENV': JSON.stringify('production')
-        }),
         new webpack.optimize.UglifyJsPlugin({
         compress: {warnings: false},
-        mangle: false,
-        sourceMap: false
+        mangle: false
+        }),
+        new webpack.optimize.CommonsChunkPlugin({
+            name: 'vendor',
+            filename: 'vendor.js',
+            minChunks: Infinity
+        }),
+        new webpack.optimize.DedupePlugin({
+        'process.env': { ENV: JSON.stringify(ENV) }
         })
     ]
 };
