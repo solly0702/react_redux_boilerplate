@@ -7,9 +7,11 @@
   "scripts": {
     "test": "mocha --compilers js:babel-core/register --require ./test/test_helper.js --recursive ./test",
     "test:watch": "npm run test -- --watch",
-    "production": "export NODE_ENV=production pm2 start --interpreter babel-node server/server.js",
+    "build": "rimraf dist && webpack --progress --profile --bail",
+    "pm2": "export NODE_ENV=production && pm2 start --interpreter babel-node server/server.js",
     "server": "nodemon --watch server --exec babel-node -- server/server.js",
-    "start": "webpack-dev-server"
+    "start": "webpack-dashboard -- webpack-dev-server --inline --port 8080",
+    "postinstall": ""
   },
   "author": "Sol Lee <solly0702@gmail.com>",
   "license": "ISC",
@@ -26,6 +28,7 @@
     "redux-thunk": "^2.1.0"
   },
   "devDependencies": {
+    "autoprefixer": "^6.5.3",
     "babel-cli": "^6.18.0",
     "babel-core": "^6.9.0",
     "babel-loader": "^6.2.4",
@@ -42,15 +45,19 @@
     "compass-mixins": "^0.12.10",
     "css-loader": "^0.25.0",
     "file-loader": "^0.9.0",
+    "html-webpack-plugin": "^2.24.1",
     "jquery": "^3.1.1",
     "jsdom": "^9.2.1",
+    "json-loader": "^0.5.4",
     "mocha": "^3.1.0",
     "node-sass": "^3.10.1",
+    "postcss-loader": "^1.1.1",
     "react-addons-test-utils": "^15.1.0",
     "sass-loader": "^4.0.2",
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
     "webpack": "^1.13.0",
+    "webpack-dashboard": "^0.2.0",
     "webpack-dev-server": "^1.14.1"
   }
 }
